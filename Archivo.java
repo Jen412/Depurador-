@@ -15,8 +15,10 @@ public class Archivo{
             BufferedReader br = new BufferedReader(fr);
             String aux="", ss="";
             while(true){
+                //se lee linea por linea
                 aux=br.readLine();
                 if (aux!=null) {
+                    //aqui es donde validas el comentario y que no alla un null o salto tons toma la linea y salta
                     if (validarComent(aux) ==true&& aux.length()!=0){
                         ss=ss+aux+"\n";
                     }
@@ -26,7 +28,9 @@ public class Archivo{
             }
             br.close();
             fr.close();
+            //elimina los espacios del inicio y del final pa que solo queden en medio
             ss =ss.trim();
+            //elimina los tabuladores
             ss=ss.replaceAll("\t","");
             return ss;
         } 
@@ -36,7 +40,7 @@ public class Archivo{
 
         return null;
     }
-
+    //validas los comentarios para que sespués de un // no se toma en cuenta
     public static boolean validarComent(String s) {
         boolean b=true;
         for (int i = 0; i <s.length(); i++) {
@@ -48,15 +52,6 @@ public class Archivo{
         return b;
     }
 
-    public static boolean validSaltos(String s) {
-        boolean b =true;
-        for (int i = 0; i <s.length(); i++) {
-            if (s.length() ==0) {
-                b=false;
-            }
-        }
-        return b;
-    }
 
     public static void write(String s) {
         try {
