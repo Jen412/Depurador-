@@ -1,0 +1,25 @@
+//programa inicial
+//Juan Fernando Brambila 
+//Sara Montserrat Meza
+
+//ingresar valores
+imprimir "MOSTRAR MAYOR O MENOR O IGUALES";
+imprimir "Ingrese numero 1: ";
+leer num1
+imprimir "Ingrese numero 2: ";
+leer num2
+
+//calculos del algoritmo
+si num1==num2 entonces(
+	imprimir "los numeros son iguales";
+)
+sino(
+	si num1>num2 entonces(
+		imprimir "El primer numero es mayor";
+		imprimir "El segundo numero es menor";	
+	)
+	sino(
+		imprimir "El segundo numero es mayor";
+		imprimir "El primer numero es menor";	
+	)
+)
