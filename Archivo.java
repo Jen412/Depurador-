@@ -3,9 +3,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Vector;
 
 public class Archivo{
-
+    static int cont=0;
+    static  Vector lineas[];
     public static String read(String s) {
         File f;
         FileReader fr;
@@ -16,8 +18,10 @@ public class Archivo{
             String aux="", ss="";
             while(true){
                 //se lee linea por linea
+                
                 aux=br.readLine();
                 if (aux!=null) {
+                    cont++;
                     //aqui es donde validas el comentario y que no alla un null o salto tons toma la linea y salta
                     if (validarComent(aux) ==true&& aux.length()!=0){
                         ss=ss+aux+"\n";
@@ -26,12 +30,26 @@ public class Archivo{
                     break;
                 }
             }
-            br.close();
-            fr.close();
+            
             //elimina los espacios del inicio y del final pa que solo queden en medio
             ss =ss.trim();
             //elimina los tabuladores
             ss=ss.replaceAll("\t","");
+            ss =ss.replaceAll("  ", " ");
+            lineas = new Vector[cont];
+            fr = new FileReader(f);
+            br = new BufferedReader(fr);
+            for (int i = 0; i < lineas.length; i++) {
+                Vector x = new Vector<>();
+                x.add(i+1);
+                x.add(br.readLine());
+                lineas[i] = x;
+            }
+            for (int i = 0; i < lineas.length; i++) {
+                System.out.println(lineas[i]);
+            }
+            br.close();
+            fr.close();
             return ss;
         } 
         catch (Exception e) {
@@ -55,7 +73,7 @@ public class Archivo{
 
     public static void write(String s) {
         try {
-            String ruta = "EjemploPrueba.dev";
+            String ruta = "EjemploPrueba.dep";
             File file = new File(ruta);
             // Si el archivo no existe es creado
             if (!file.exists()) {
