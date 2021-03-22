@@ -45,9 +45,9 @@ public class Archivo{
                 x.add(br.readLine());
                 lineas[i] = x;
             }
-            for (int i = 0; i < lineas.length; i++) {
-                System.out.println(lineas[i]);
-            }
+            // for (int i = 0; i < lineas.length; i++) {
+            //     System.out.println(lineas[i]);
+            // }
             br.close();
             fr.close();
             return ss;
@@ -58,11 +58,11 @@ public class Archivo{
 
         return null;
     }
-    //validas los comentarios para que sespués de un // no se toma en cuenta
+    //validas los comentarios para que sespués de un # no se toma en cuenta
     public static boolean validarComent(String s) {
         boolean b=true;
         for (int i = 0; i <s.length(); i++) {
-            if (s.charAt(i) == '/' && s.charAt(i+1) == '/') {
+            if (s.charAt(i) == '#') {
                 b=false;
             }
         }
