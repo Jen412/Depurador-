@@ -107,7 +107,8 @@ public class TablaTokens {
                     posicion = j+1;
                     if (palabra.compareTo(reservadas[0])==0) {
                         banImprimir =true;
-                        banLeer=false;
+                        banLeer =false;
+                        banLiteral =false;
                         v = new Vector<>();
                         v.add(palabra);
                         v.add("");
@@ -115,8 +116,9 @@ public class TablaTokens {
                         tokens.add(v);
                     }
                     else if(palabra.compareTo(reservadas[1])==0){
-                        banImprimir=false;
-                        banLeer=true;
+                        banImprimir =false;
+                        banLeer =true;
+                        banLiteral =false;
                         v = new Vector<>();
                         v.add(palabra);
                         v.add("");
@@ -129,19 +131,23 @@ public class TablaTokens {
                         banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[3])==0){
-                        banImprimir=false;
+                        banImprimir =false;
+                        banLeer =false;
                         banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[4])==0){
-                        banImprimir=false;
+                        banImprimir =false;
+                        banLeer =false;
                         banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[5])==0){
-                        banImprimir=false;
+                        banImprimir =false;
+                        banLeer =false;
                         banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[6])==0){
-                        banImprimir=false;
+                        banImprimir =false;
+                        banLeer =false;
                         banLiteral =false;
                     }
                     break;
@@ -150,43 +156,31 @@ public class TablaTokens {
             }
             //imprimir
             if (banImprimir==true) {
-                palabra="";
-                int in = 0;
-                for (int j = posicion; j <auxL.length(); j++) {
-                    char c = auxL.charAt(j);
-                    if (c==carSim[11]) {
-                        palabra+=c;
-                        banLiteral =true;
-                        in++;
-                    }
-                    else if(in==0){
-                        // System.err.println("Las cadenas deben de comenzar con "+'"');
-                        // banErrores =true;
+               palabra="";
+               if (auxL.charAt(posicion)==carSim[11] && auxL.charAt(auxL.length()-1)==';'){
+                  System.out.println(auxL.charAt(posicion));
+                  for (int j = posicion; j <auxL.length(); j++) {
+                     char c = auxL.charAt(j);
+                     if (c!= ';'){
+                           palabra+=c;
+                     }
+                     else {
                         break;
-                    }
-                    if (c!=carSim[11] && c!= ';') {
-                        palabra+=c;
-                    }
-                    // else if (c==carSim[11]) {
-                    //     System.err.println("Las cadenas deben de terminar con "+'"');
-                    //     banErrores = true;
-                    //     break;
-                    // }
-                }
-                if (banErrores ==false) {
-                    if (banLiteral == true) {
-                        v = new Vector<>();
-                        v.add(palabra);
-                        v.add("literal");
-                        v.add(" ");
-                        tokens.add(v);
-                        }
-                }
-                else{
-                    System.exit(0);
-                }
+                     }
+                  }
+                  if (banErrores == false) {
+                     v = new Vector<>();
+                     v.add(palabra);
+                     v.add("literal");
+                     v.add(" ");
+                     tokens.add(v);
+                  }
+                  else{
+                     System.exit(0);
+                  }
+               }
             }
-
+            //leer
             if (banLeer == true) {
                 palabra="";
                 for (int j = posicion; j < auxL.length(); j++) {
@@ -249,7 +243,4 @@ public class TablaTokens {
             System.out.println(tokens.get(i));
         }
     }
-
-
-
 }
