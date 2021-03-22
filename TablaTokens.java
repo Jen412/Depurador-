@@ -62,7 +62,7 @@ public class TablaTokens {
         Vector lineas[]=null;
         File f;
         FileReader fr;
-        boolean banErrores=false, banImprimir=false, banLeer=false, banTipo =false, banId=false;
+        boolean banErrores=false, banImprimir=false, banLeer=false, banTipo =false, banId=false, banLiteral=false;
 
         int cont=0;
         try {
@@ -126,18 +126,23 @@ public class TablaTokens {
                     else if(palabra.compareTo(reservadas[2])==0){
                         banImprimir =false;
                         banLeer =false;
+                        banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[3])==0){
                         banImprimir=false;
+                        banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[4])==0){
                         banImprimir=false;
+                        banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[5])==0){
                         banImprimir=false;
+                        banLiteral =false;
                     }
                     else if(palabra.compareTo(reservadas[6])==0){
                         banImprimir=false;
+                        banLiteral =false;
                     }
                     break;
                 }
@@ -151,6 +156,7 @@ public class TablaTokens {
                     char c = auxL.charAt(j);
                     if (c==carSim[11]) {
                         palabra+=c;
+                        banLiteral =true;
                         in++;
                     }
                     else if(in==0){
@@ -168,11 +174,13 @@ public class TablaTokens {
                     // }
                 }
                 if (banErrores ==false) {
-                    v = new Vector<>();
-                    v.add(palabra);
-                    v.add("literal");
-                    v.add(" ");
-                    tokens.add(v);
+                    if (banLiteral == true) {
+                        v = new Vector<>();
+                        v.add(palabra);
+                        v.add("literal");
+                        v.add(" ");
+                        tokens.add(v);
+                        }
                 }
                 else{
                     System.exit(0);
