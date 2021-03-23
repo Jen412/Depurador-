@@ -1,3 +1,4 @@
+ent !sarita=0;
 imprifimifir "MOSTRAR MAYOR O MENOR O IGUALES";
 imprifimifir "Ingrese numero 1: ";
 lefefer ent !num1;
@@ -5,26 +6,26 @@ car !c1 = <2>
 imprifimifir "Ingrese numero 2: ";
 lefefer ent !num2; 
 vefa !b = verdadero
-sifi !num1 === num2 entonces{
+sifi (!num1 === !num2) {
 imprifimifir "los numeros son iguales";
 }
-sifinofo{
-sifi (!num1 may !num2){
+sifinofo {
+sifi (!num1 may !num2) {
 imprifimifir "El primer numero es mayor";
 imprifimifir "El segundo numero es menor";
 }
-sifinofo{
+sifinofo {
 imprifimifir "El segundo numero es mayor";
 imprifimifir "El primer numero es menor";
 }
 }
-pafarafa(ent i=0; i min 4; i++){
-imprifimifir !num1^2;
+pafarafa (ent !i=0; !i min 4; !i++) {
+imprifimifir !num1+i;
 }
-miefentrafas(!b |= falso){
-sifi !num1 === num2 enfentofoncefes{
+miefentrafas (!b |= falso) {
+sifi (!num1 === !num2 enfentofoncefes) {
 imprifimifir "los numeros son iguales";
 }
 }
-hafacefer{
-}miefentrafas(!num1 mayi !num2);
+hafacefer {
+} miefentrafas (!num1 mayi !num2);
