@@ -60,7 +60,7 @@ public class TablaTokens {
         compAlg[12] = "/";
         compAlg[13] = "^";
         compAlg[14] = "++";
-        compAlg[15] = "++";
+        compAlg[15] = "--";
     }
 
     public void tablaTokens(Vector[] lineasD) {
@@ -222,6 +222,7 @@ public class TablaTokens {
                         banWhile= false;
                         banFor = false;
                         banAsig =true;
+                        agregarReservada(palabra, "id");
                     }
                     break;
                 }
@@ -490,43 +491,35 @@ public class TablaTokens {
                 posicion =agregarCierreP(posicion, auxL, palabra);
                 palabra ="";
 
-                System.out.println(auxL.charAt(posicion));
                 posicion = agregarAperturaL(posicion+1, auxL, palabra);
                 palabra ="";
             }
 
-            // if (banAsig ==true) {
-            //     palabra ="";
-            //     posicion = agregarVariables(posicion, auxL, palabra);
-            //     palabra ="";
-                
-            //     posicion = agregarIgual(posicion, auxL, palabra);
-            //     palabra ="";
+            if (banAsig ==true) {
+                palabra="";
+                posicion = agregarIgual(posicion, auxL, palabra);
+                palabra ="";
 
-            //     do {
-
-            //         for (int k = 9; k < 13; k++) {
-            //             if (auxL.charAt(posicion+2) == compAlg[k].charAt(0)) {
-            //                 posicion = agregarSimbolo(posicion+2, auxL, palabra);
-            //                 palabra ="";
-            //             }
-            //         }
+                if (validarBool(auxL.charAt(posicion+1))==true) {
+                    posicion = agregarBool(posicion+1, auxL, palabra);
+                    palabra ="";
+                }else if(auxL.charAt(posicion) == '!'){
+                    posicion = agregarVariables(posicion, auxL, palabra);
+                    palabra = "";
+                }
+                // do{
                     
-            //         if (validarBool(auxL.charAt(posicion-1))==true) {
-            //             posicion = agregarBool(posicion-1, auxL, palabra);
-            //             palabra ="";
-            //         }
-            //         else if(auxL.charAt(posicion-1) == '!'){
-            //             posicion = agregarVariables(posicion-1, auxL, palabra);
-            //             palabra = "";
-            //         }
-            //         else{
-            //             posicion = agregarValor(posicion-1, auxL, palabra);
-            //             palabra ="";
-            //         }
-                    
-            //     } while (auxL.charAt(posicion-1) != ';');
-            // }
+                //     if (validarNum(auxL.charAt(posicion))){
+                //         posicion = agregarValor(posicion, auxL, palabra);
+                //         palabra ="";
+                //     }else if (auxL.charAt(posicion) == '+' || auxL.charAt(posicion) == '-' ||auxL.charAt(posicion) == '*'
+                //     || auxL.charAt(posicion) == '/') {
+                //         posicion = agregarSimbolo(posicion, auxL, palabra);
+                //         palabra ="";
+                //     }
+         
+                // } while (auxL.charAt(posicion) != ';');
+            }
         }
 
         for (int i = 0; i < tokens.size(); i++) {
@@ -745,7 +738,7 @@ public class TablaTokens {
     public static int agregarIgual(int posicion, String auxL,String palabra) {
         for (int i = posicion; i < auxL.length(); i++) {
             char c = auxL.charAt(i);
-            if (c != ' ') {
+            if (c != ' ' && c== '=') {
                 palabra+=c;
             }
             else{
@@ -785,7 +778,7 @@ public class TablaTokens {
                 }
                 else{
                     val = "numero";
-                    posicion=i;
+                    posicion=i+1;
                     break;
                 } 
             }
@@ -821,10 +814,14 @@ public class TablaTokens {
     }
 
     public static int agregarSimbolo(int posicion, String auxL,String palabra){
-        for (int i = 9; i < 13; i++) {
-            char c = auxL.charAt(posicion);
-            if (c == compAlg[i].charAt(0)) {
+        for (int j = posicion; j < auxL.length(); j++) {
+            char c = auxL.charAt(j);
+            if (c != ' ') {
                 palabra+=c;
+            }
+            else{
+                posicion=j+1;
+                break;
             }
         }
         v = new Vector<>();
