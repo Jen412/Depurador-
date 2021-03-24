@@ -11,7 +11,7 @@ car !c1 = <2>;
 imprifimifir "Ingrese numero 2: ";
 lefefer ent  !num2; 
 vefa !b = verdadero;
-
+!b = falso;
 #calculos del algoritmo
 sifi  (!num1 === !num2 oo !num1 may 5 yy !b === verdadero) {
 	imprifimifir "los numeros son iguales";
