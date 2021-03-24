@@ -15,16 +15,15 @@ public class TablaTokens {
     banFor = false, banAsig =false;
 
     public TablaTokens(){
-        reservadas = new String[9];
+        reservadas = new String[8];
         reservadas[0] = "imprifimifir";
         reservadas[1] = "lefefer";
         reservadas[2] = "sifi";
         reservadas[3] = "sifinofo";
         reservadas[4] = "pafarafa";
         reservadas[5] = "miefentrafas";
-        reservadas[6] = "hafacefer";
-        reservadas[7] = "verdadero";
-        reservadas[8] = "falso";
+        reservadas[6] = "verdadero";
+        reservadas[7] = "falso";
         tipos = new String[5];
         tipos[0] = "ent";
         tipos[1] = "cad";
@@ -191,16 +190,6 @@ public class TablaTokens {
                         banFor = false;
                         banAsig =false;
                         agregarReservada(palabra, "while");
-                    }
-                    else if(palabra.compareTo(reservadas[6])==0){
-                        banImprimir =false;
-                        banLeer =false;
-                        banTipo = false;
-                        banSi =false;
-                        banSiNo=false;
-                        banWhile= false;
-                        banFor = false;
-                        banAsig =false;
                     }
                     else if (palabra.compareTo(tipos[0])==0 || palabra.compareTo(tipos[1])==0 ||
                     palabra.compareTo(tipos[2])==0 ||palabra.compareTo(tipos[3])==0 ||palabra.compareTo(tipos[4])==0){
@@ -499,26 +488,17 @@ public class TablaTokens {
                 palabra="";
                 posicion = agregarIgual(posicion, auxL, palabra);
                 palabra ="";
-
+                
                 if (validarBool(auxL.charAt(posicion+1))==true) {
                     posicion = agregarBool(posicion+1, auxL, palabra);
                     palabra ="";
-                }else if(auxL.charAt(posicion) == '!'){
-                    posicion = agregarVariables(posicion, auxL, palabra);
+                }else if(auxL.charAt(posicion+1) == '!'){
+                    posicion = agregarVariables(posicion+1, auxL, palabra);
                     palabra = "";
-                }
-                // do{
-                    
-                //     if (validarNum(auxL.charAt(posicion))){
-                //         posicion = agregarValor(posicion, auxL, palabra);
-                //         palabra ="";
-                //     }else if (auxL.charAt(posicion) == '+' || auxL.charAt(posicion) == '-' ||auxL.charAt(posicion) == '*'
-                //     || auxL.charAt(posicion) == '/') {
-                //         posicion = agregarSimbolo(posicion, auxL, palabra);
-                //         palabra ="";
-                //     }
-         
-                // } while (auxL.charAt(posicion) != ';');
+                }else if (validarNum(auxL.charAt(posicion+1))){
+                    posicion = agregarValor(posicion+1, auxL, palabra);
+                    palabra ="";
+                } 
             }
         }
 
@@ -765,6 +745,18 @@ public class TablaTokens {
                 }
                 else{
                     val = "literal";
+                    posicion = i;
+                    break;
+                }
+            }
+        }else if(auxL.charAt(posicion)== '<'){
+            for (int i = posicion; i < auxL.length(); i++) {
+                char c = auxL.charAt(i);
+                if (c != ';') {
+                    palabra+=c;
+                }
+                else{
+                    val = "caracter";
                     posicion = i;
                     break;
                 }
