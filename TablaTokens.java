@@ -11,7 +11,8 @@ public class TablaTokens {
     private static String compAlg[];
     private static ArrayList tokens;
     static Vector v;
-    static boolean banErrores=false, banImprimir=false, banLeer=false, banTipo =false, banId=false, banSi=false , banSiNo=false, banWhile= false;
+    static boolean banErrores=false, banImprimir=false, banLeer=false, banTipo =false, banId=false, banSi=false , banSiNo=false, banWhile= false,
+    banFor = false, banAsig =false;
 
     public TablaTokens(){
         reservadas = new String[9];
@@ -43,7 +44,7 @@ public class TablaTokens {
         carSim[9] = '<';
         carSim[10] = '>';
         carSim[11] = '"';
-        compAlg =  new String[14];
+        compAlg =  new String[16];
         compAlg[0] = "may";
         compAlg[1] = "min";
         compAlg[2] = "mayi";
@@ -58,6 +59,8 @@ public class TablaTokens {
         compAlg[11] = "*";
         compAlg[12] = "/";
         compAlg[13] = "^";
+        compAlg[14] = "++";
+        compAlg[15] = "++";
     }
 
     public void tablaTokens(Vector[] lineasD) {
@@ -113,6 +116,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                     }
                     palabra+=c;
                 }
@@ -128,6 +133,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                         agregarReservada(palabra, "print");
                     }
                     else if(palabra.compareTo(reservadas[1])==0){
@@ -137,6 +144,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                         agregarReservada(palabra, "read");
                     }
                     else if(palabra.compareTo(reservadas[2])==0){
@@ -146,6 +155,8 @@ public class TablaTokens {
                         banSi =true;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                         agregarReservada(palabra, "if");
                     }
                     else if(palabra.compareTo(reservadas[3])==0){
@@ -155,6 +166,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=true;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                         agregarReservada(palabra, "else");
                     }
                     else if(palabra.compareTo(reservadas[4])==0){
@@ -164,6 +177,9 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = true;
+                        banAsig =false;
+                        agregarReservada(palabra, "for");
                     }
                     else if(palabra.compareTo(reservadas[5])==0){
                         banImprimir =false;
@@ -172,6 +188,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= true;
+                        banFor = false;
+                        banAsig =false;
                         agregarReservada(palabra, "while");
                     }
                     else if(palabra.compareTo(reservadas[6])==0){
@@ -181,6 +199,8 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
                     }
                     else if (palabra.compareTo(tipos[0])==0 || palabra.compareTo(tipos[1])==0 ||
                     palabra.compareTo(tipos[2])==0 ||palabra.compareTo(tipos[3])==0 ||palabra.compareTo(tipos[4])==0){
@@ -190,6 +210,18 @@ public class TablaTokens {
                         banSi =false;
                         banSiNo=false;
                         banWhile= false;
+                        banFor = false;
+                        banAsig =false;
+                    }
+                    else if(palabra.charAt(0) == '!'){
+                        banImprimir =false;
+                        banLeer =false;
+                        banTipo = false;
+                        banSi =false;
+                        banSiNo=false;
+                        banWhile= false;
+                        banFor = false;
+                        banAsig =true;
                     }
                     break;
                 }
@@ -198,6 +230,7 @@ public class TablaTokens {
             //imprimir
             if (banImprimir==true) {
                 palabra="";
+                String val="";
                 if (auxL.charAt(posicion)==carSim[11] && auxL.charAt(auxL.length()-1)==';'){
                     // System.out.println(auxL.charAt(posicion));
                     for (int j = posicion; j <auxL.length(); j++) {
@@ -206,20 +239,31 @@ public class TablaTokens {
                            palabra+=c;
                         }
                         else {
+                            val = "literal";
+                            posicion = j;
+                            break;
+                        }
+                    } 
+                    
+                }
+                else{
+                    for (int j = posicion; j < auxL.length(); j++) {
+                        char c = auxL.charAt(j); 
+                        if (c != ';') {
+                            palabra+=c;
+                        }
+                        else{
+                            val = "id";
+                            posicion =j;
                             break;
                         }
                     }
-                    if (banErrores == false) {
-                        v = new Vector<>();
-                        v.add(palabra);
-                        v.add("literal");
-                        v.add(" ");
-                        tokens.add(v);
-                    }
-                    else{
-                        System.exit(0);
-                    }
                 }
+                v = new Vector<>();
+                v.add(palabra);
+                v.add(val);
+                v.add(" ");
+                tokens.add(v);
             }
             //leer
             if (banLeer == true) {
@@ -235,32 +279,18 @@ public class TablaTokens {
                 v.add(" ");
                 tokens.add(v);
                 palabra="";
-                for (int j = posicion; j < auxL.length(); j++) {
-                    char c = auxL.charAt(j);
-                    if (c == carSim[8]) {
-                        palabra+=c;
-                    }
-                    else if(c != ' '&& c!= ';') {
-                        palabra+= c;
-                    }
-                    else{
-                        break;
-                    }
-                    if (palabra.charAt(0) != '!'&& palabra.length() >0) {
-                        banId=false;
+                posicion = agregarVariables(posicion, auxL, palabra);
+                palabra="";
+                if (auxL.charAt(posicion) != ';') {
+                    posicion = agregarIgual(posicion, auxL, palabra);
+                    palabra ="";
+                    if(validarBool(auxL.charAt(posicion+1))==true){
+                        posicion = agregarBool(posicion+1, auxL, palabra);
+                        palabra="";
                     }
                     else{
-                        banId = true;
-                    }
-                }
-                for (int j = 0; j <tipos.length; j++) {
-                    if (palabra.equals(tipos[j])==false && banId !=false) {
-                        v = new Vector<>();
-                        v.add(palabra);
-                        v.add("id");
-                        v.add(" ");
-                        tokens.add(v);
-                        break;
+                        posicion = agregarValor(posicion+1, auxL, palabra);
+                        palabra="";   
                     }
                 }
             }
@@ -287,7 +317,8 @@ public class TablaTokens {
                 else if(validarNum(auxL.charAt(posicion)) ==true){
                     posicion = agregarConstante(posicion, auxL, palabra);
                     palabra="";
-                }else if(validarBool(auxL.charAt(posicion)) == true){
+                }
+                else if(validarBool(auxL.charAt(posicion)) == true){
                     posicion = agregarBool(posicion, auxL, palabra);
                     palabra="";
                 }
@@ -322,9 +353,14 @@ public class TablaTokens {
         
                         if (auxL.charAt(posicion) == carSim[8]) {
                             posicion = agregarVariables(posicion, auxL, palabra);
+                            palabra="";
                         }
                         else if(validarNum(auxL.charAt(posicion)) ==true){
                             posicion = agregarConstante(posicion, auxL, palabra);
+                            palabra="";
+                        }
+                        else if(validarBool(auxL.charAt(posicion)) == true){
+                            posicion = agregarBool(posicion, auxL, palabra);
                             palabra="";
                         }
                     }while(auxL.charAt(posicion-2) != carSim[4]);
@@ -339,6 +375,45 @@ public class TablaTokens {
                 palabra ="";
                 posicion = agregarAperturaL(posicion, auxL, palabra);
                 palabra ="";
+            }
+
+            if (banFor ==true) {
+                palabra="";
+                posicion = agregarAperturaP(posicion, auxL, palabra);
+                palabra = "";
+
+                posicion = agregarTipo(posicion, auxL, palabra);
+                palabra="";
+
+                posicion = agregarVariables(posicion, auxL, palabra);
+                palabra="";
+
+                posicion = agregarIgual(posicion, auxL, palabra);
+                palabra ="";
+
+                posicion = agregarValor(posicion+1, auxL, palabra);
+                palabra="";
+
+                posicion= agregarVariables(posicion+2, auxL, palabra);
+                palabra="";
+
+                posicion=agregarComp(posicion, auxL, palabra);
+                palabra="";
+
+                posicion = agregarValor(posicion, auxL, palabra);
+                palabra="";
+
+                posicion= agregarVariables(posicion+2, auxL, palabra);
+                palabra="";
+
+                posicion=agregarOperadorEsp(posicion-1, auxL, palabra);
+                palabra="";
+
+                posicion =agregarCierreP(posicion, auxL, palabra);
+                palabra ="";
+
+                posicion =agregarAperturaL(posicion+1, auxL, palabra);
+                palabra="";
             }
 
             if (banWhile == true) {
@@ -359,11 +434,18 @@ public class TablaTokens {
 
                 if (auxL.charAt(posicion) == carSim[8]) {
                     posicion = agregarVariables(posicion, auxL, palabra);
+                    palabra="";
                 }
                 else if(validarNum(auxL.charAt(posicion)) ==true){
                     posicion = agregarConstante(posicion, auxL, palabra);
                     palabra="";
                 }
+                else if(validarBool(auxL.charAt(posicion)) == true){
+                    posicion = agregarBool(posicion, auxL, palabra);
+                    palabra="";
+                }
+                
+
                 if (auxL.charAt(posicion)!= carSim[4]) {
                     do {
                         for (int j = posicion; j < auxL.length(); j++) {
@@ -393,19 +475,58 @@ public class TablaTokens {
         
                         if (auxL.charAt(posicion) == carSim[8]) {
                             posicion = agregarVariables(posicion, auxL, palabra);
+                            palabra="";
                         }
                         else if(validarNum(auxL.charAt(posicion)) ==true){
                             posicion = agregarConstante(posicion, auxL, palabra);
                             palabra="";
                         }
+                        else if(validarBool(auxL.charAt(posicion)) == true){
+                            posicion = agregarBool(posicion, auxL, palabra);
+                            palabra="";
+                        }
                     }while(auxL.charAt(posicion-2) != carSim[4]);
                 }
-                posicion =agregarCierreP(posicion-2, auxL, palabra);
+                posicion =agregarCierreP(posicion, auxL, palabra);
                 palabra ="";
 
+                System.out.println(auxL.charAt(posicion));
                 posicion = agregarAperturaL(posicion+1, auxL, palabra);
                 palabra ="";
             }
+
+            // if (banAsig ==true) {
+            //     palabra ="";
+            //     posicion = agregarVariables(posicion, auxL, palabra);
+            //     palabra ="";
+                
+            //     posicion = agregarIgual(posicion, auxL, palabra);
+            //     palabra ="";
+
+            //     do {
+
+            //         for (int k = 9; k < 13; k++) {
+            //             if (auxL.charAt(posicion+2) == compAlg[k].charAt(0)) {
+            //                 posicion = agregarSimbolo(posicion+2, auxL, palabra);
+            //                 palabra ="";
+            //             }
+            //         }
+                    
+            //         if (validarBool(auxL.charAt(posicion-1))==true) {
+            //             posicion = agregarBool(posicion-1, auxL, palabra);
+            //             palabra ="";
+            //         }
+            //         else if(auxL.charAt(posicion-1) == '!'){
+            //             posicion = agregarVariables(posicion-1, auxL, palabra);
+            //             palabra = "";
+            //         }
+            //         else{
+            //             posicion = agregarValor(posicion-1, auxL, palabra);
+            //             palabra ="";
+            //         }
+                    
+            //     } while (auxL.charAt(posicion-1) != ';');
+            // }
         }
 
         for (int i = 0; i < tokens.size(); i++) {
@@ -423,7 +544,7 @@ public class TablaTokens {
     public static int agregarVariables(int posicion, String auxL, String palabra) {
         for (int j = posicion; j < auxL.length(); j++) {
             char c = auxL.charAt(j);
-            if (c == carSim[8] || c!= ' ' && c!= ';' && c!= carSim[4]) {
+            if (c == carSim[8] || c!= ' ' && c!= ';' && c!= carSim[4] && c != compAlg[9].charAt(0)) {
                 palabra+=c;
             }
             else{
@@ -595,7 +716,6 @@ public class TablaTokens {
 
     public static boolean validarBool(char c) {
         boolean b=false;
-        System.out.println(c);
         if (c == 'v' || c == 'f') {
             b=true;
         }
@@ -605,7 +725,7 @@ public class TablaTokens {
     public static int agregarBool(int posicion, String auxL, String palabra) {
         for (int j = posicion; j < auxL.length(); j++) {
             char c = auxL.charAt(j);
-            if (c != ' ') {
+            if (c != ' ' && c != carSim[4] && c!= ';') {
                 palabra+=c;
             }
             else{
@@ -619,6 +739,99 @@ public class TablaTokens {
         v.add(" ");
         tokens.add(v);
 
+        return posicion;
+    }
+
+    public static int agregarIgual(int posicion, String auxL,String palabra) {
+        for (int i = posicion; i < auxL.length(); i++) {
+            char c = auxL.charAt(i);
+            if (c != ' ') {
+                palabra+=c;
+            }
+            else{
+                posicion=i;
+                break;
+            }
+        }
+        v = new Vector<>();
+        v.add(palabra);
+        v.add("asignacion");
+        v.add(" ");
+        tokens.add(v);
+        
+        return posicion;
+    }
+
+    public static int agregarValor(int posicion, String auxL, String palabra) {
+        String val = "";
+        if (auxL.charAt(posicion) =='"') {
+            for (int i = posicion; i < auxL.length(); i++) {
+                char c = auxL.charAt(i);
+                if (c != ';') {
+                    palabra+=c;
+                }
+                else{
+                    val = "literal";
+                    posicion = i;
+                    break;
+                }
+            }
+        }
+        else{
+            for (int i = posicion; i < auxL.length(); i++) {
+                char c = auxL.charAt(i);
+                if (c != ';' && c != ' ') {
+                    palabra+=c;
+                }
+                else{
+                    val = "numero";
+                    posicion=i;
+                    break;
+                } 
+            }
+        }
+        v = new Vector<>();
+        v.add(palabra);
+        v.add(val);
+        v.add(" ");
+        tokens.add(v);
+
+        
+        return posicion;
+    }
+
+    public static int agregarOperadorEsp(int posicion, String auxL, String palabra) {
+        for (int i = posicion; i < auxL.length(); i++) {
+            char c = auxL.charAt(i);
+            if (c == '+' || c=='-') {
+                palabra+=c;
+            }
+            else{
+                posicion=i;
+                break;
+            }
+        }
+        v = new Vector<>();
+        v.add(palabra);
+        v.add("operador doble");
+        v.add(" ");
+        tokens.add(v);
+
+        return posicion;
+    }
+
+    public static int agregarSimbolo(int posicion, String auxL,String palabra){
+        for (int i = 9; i < 13; i++) {
+            char c = auxL.charAt(posicion);
+            if (c == compAlg[i].charAt(0)) {
+                palabra+=c;
+            }
+        }
+        v = new Vector<>();
+        v.add(palabra);
+        v.add("simbolo");
+        v.add(" ");
+        tokens.add(v);
         return posicion;
     }
 

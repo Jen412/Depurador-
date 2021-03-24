@@ -9,6 +9,7 @@ vefa !b = verdadero;
 sifi (!num1 === !num2 oo !num1 may 5 yy !b === verdadero) {
 imprifimifir "los numeros son iguales";
 }
+!num1 = 3 + 4 * 2;
 sifinofo {
 sifi (!num1 may !num2) {
 imprifimifir "El primer numero es mayor";
@@ -19,11 +20,11 @@ imprifimifir "El segundo numero es mayor";
 imprifimifir "El primer numero es menor";
 }
 }
-pafarafa (ent !i=0; !i min 4; !i++) {
-imprifimifir !num1+i;
+pafarafa (ent !i = 0; !i min 4; !i++) {
+imprifimifir !num1;
 }
 miefentrafas (!b |= falso) {
-sifi (!num1 === !num2 enfentofoncefes) {
+sifi (!num1 === !num2) {
 imprifimifir "los numeros son iguales";
 }
 }
